@@ -1,73 +1,64 @@
-//preloader
-
-window.onload = function () {
+window.onload = () => {
   document.body.classList.add('loaded_hiding');
   window.setTimeout(function () {
     document.body.classList.add('loaded');
     document.body.classList.remove('loaded_hiding');
   }, 500);
-}
-
-// animation on scroll
+};
 
 const animItems = document.querySelectorAll('.anim-item');
-if (animItems.length > 0) {
 
+if (animItems.length > 0) {
   let offset = (el) => {
     const rect = el.getBoundingClientRect(),
       scrollLeft = window.scrollY || document.documentElement.scrollLeft,
       scrollTop = window.scrollY || document.documentElement.scrollTop;
-    return { top: rect.top + scrollTop, left: rect.left + scrollLeft }
-  }
+    return { top: rect.top + scrollTop, left: rect.left + scrollLeft };
+  };
   let animOnScroll = () => {
     for (let index = 0; index < animItems.length; index++) {
       const animItem = animItems[index];
       const animItemHeight = animItem.offsetHeight;
       const animItemOffset = offset(animItem).top;
       const animStart = 4;
-
       let animItemPoint = window.innerHeight - animItemHeight / animStart;
+
       if (animItemHeight > window.innerHeight) {
         animItemPoint = window.innerHeight - window.innerHeight / animStart;
       }
-
       if ((window.scrollY > animItemOffset - animItemPoint) && window.scrollY < (animItemOffset + animItemHeight)) {
         animItem.classList.add('active-anim');
       } else {
         animItem.classList.remove('active-anim');
       }
     }
-  }
+  };
+
   window.addEventListener('scroll', animOnScroll);
-  
+
   setTimeout(() => {
     animOnScroll();
   }, 100);
-
 }
-
-// typeWriterWithDelay 
 
 let i = 0;
 let speed = 70;
 let typingMessage = document.getElementById("typing-text");
 let txt = typingMessage.dataset.typedItems;
 
-function typeWriter() {
+let typeWriter = () => {
   if (i < txt.length) {
     typingMessage.innerHTML += txt.charAt(i);
     i++;
     setTimeout(typeWriter, speed);
   }
-}
+};
 
-function typeWriterWithDelay() {
+let typeWriterWithDelay = () => {
   setTimeout(typeWriter, 500);
 };
 
 typeWriterWithDelay();
-
-// mobile navigation menu become visible
 
 let mobileNavToogle = document.querySelector(".mobile__nav__toggle");
 
@@ -76,11 +67,9 @@ mobileNavToogle.addEventListener("click", () => {
   header.classList.toggle("display-block");
 });
 
-// link's smooth behavior 
-
 const smoothLinks = document.querySelectorAll('a[href^="#"]');
 for (let smoothLink of smoothLinks) {
-  smoothLink.addEventListener('click', function (e) {
+  smoothLink.addEventListener('click', (e) => {
     e.preventDefault();
     const link = smoothLink.getAttribute('href');
     document.querySelector(link).scrollIntoView({
@@ -88,24 +77,19 @@ for (let smoothLink of smoothLinks) {
       block: 'start'
     });
   });
-};
+}
 
-// back-to-top button
-
-let backtotop = document.querySelector(".back-to-top")
+let backtotop = document.querySelector(".back-to-top");
 backtotop.addEventListener('click', () => {
-
   window.scrollTo({
     top: 0,
     behavior: 'smooth'
-  })
-})
-
-// back-to-top button visible/hidden
-//wrapper background while mobile burger clicked
+  });
+});
 
 const mediaQuery1024 = window.matchMedia('(max-width: 1024px)');
 let header = document.querySelector('#header');
+
 if (backtotop) {
   const toggleBacktotop = () => {
     if (window.scrollY > 100 && !mediaQuery1024.matches) {
@@ -115,29 +99,23 @@ if (backtotop) {
       backtotop.classList.remove('visible');
       header.classList.remove('dark-header-theme');
     }
-  }
+  };
   window.addEventListener('load', toggleBacktotop);
   window.addEventListener('scroll', toggleBacktotop);
 }
 
-
-
-
-
-
-// active nav-menu__link while page is scrolling
-
 const sections = document.querySelectorAll("section");
 const navLinks = document.querySelectorAll(".nav-menu__link");
 let sectionScroll = 0;
-var lastScrollTop = 0;
+let lastScrollTop = 0;
 
-function pageScrolling(sectionScroll) {
+let pageScrolling = (sectionScroll) => {
   let current = "";
   sections.forEach((section) => {
     const sectionTop = section.offsetTop;
-    if (scrollY >= sectionTop - sectionScroll) {
-      return current = section.getAttribute("id");
+    if (window.scrollY >= sectionTop - sectionScroll) {
+      current = section.getAttribute("id");
+      return current;
     }
   });
   navLinks.forEach((li) => {
@@ -149,75 +127,70 @@ function pageScrolling(sectionScroll) {
   });
 };
 
-window.addEventListener("scroll", function () {
+window.addEventListener("scroll", () => {
   let scrollPosition = window.scrollY;
   if (scrollPosition > lastScrollTop) {
-    pageScrolling(500); // downscroll code
+    pageScrolling(500);
   } else {
-    pageScrolling(400); // upscroll code
+    pageScrolling(400);
   }
-  lastScrollTop = scrollPosition;;
+  lastScrollTop = scrollPosition;
 }, false);
-
-// show project description 
 
 let projects = document.querySelectorAll('.projects__project');
 let projectDescriptions = document.querySelectorAll('.project__description');
 let indexOfProject = 0;
 
-function onTouchstartShowDescriptionFunction(event) {
+let onTouchstartShowDescriptionFunction = (event) => {
   if (event.target === projects[indexOfProject]) {
     projectDescriptions[indexOfProject].classList.toggle('show-description');
     projects[indexOfProject].classList.toggle('show');
   }
-}
+};
 
-function onMouseenterShowDescriptionFunction(event) {
+let onMouseenterShowDescriptionFunction = (event) => {
   if (event.target === projectDescriptions[indexOfProject] || projects[indexOfProject]) {
     projectDescriptions[indexOfProject].classList.add('show-description');
     projects[indexOfProject].classList.add('show');
   }
-}
+};
 
-function onMouseleaveShowDescriptionFunction(event) {
+let onMouseleaveShowDescriptionFunction = (event) => {
   if (!(event.target === projectDescriptions[indexOfProject]) || (projects[indexOfProject])) {
     projectDescriptions[indexOfProject].classList.remove('show-description');
     projects[indexOfProject].classList.remove('show');
   }
-}
+};
 
-function showDescriptionOfProjectDesctopV(event) {
+let showDescriptionOfProjectDesctopV = (event) => {
   projects.forEach((project, index) => {
     if (event.target === project) {
       indexOfProject = index;
       projects[indexOfProject].addEventListener('mouseenter', onMouseenterShowDescriptionFunction);
       projects[indexOfProject].addEventListener('mouseleave', onMouseleaveShowDescriptionFunction);
     }
-  })
-}
+  });
+};
 
-function showDescriptionOfProjectDesctopM(event) {
+let showDescriptionOfProjectDesctopM = (event) => {
   projects.forEach((project, index) => {
     if (event.target === project) {
       indexOfProject = index;
       projects[indexOfProject].addEventListener('touchstart', onTouchstartShowDescriptionFunction);
 
     }
-  })
-}
+  });
+};
 
 window.addEventListener('mouseover', showDescriptionOfProjectDesctopV);
 document.querySelector('.sec__cont__projects').addEventListener('touchstart', showDescriptionOfProjectDesctopM);
-
-//scalable certificate images
 
 let certificateImages = document.querySelectorAll('.scalable-image>img');
 let resumeItemScaleBlock = document.querySelector('.resume-image-scale');
 const mediaQuery640 = window.matchMedia('(max-width: 640px)');
 const mediaQuery1520 = window.matchMedia('(min-width: 1520px)');
 
-
-function changeScale(event) {
+let changeScale = (event) => {
   if (mediaQuery640.matches) {
     return;
   } else if (mediaQuery1520.matches) {
@@ -229,8 +202,75 @@ function changeScale(event) {
       certificateImages[1].classList.toggle('scale');
     }
   }
-}
+};
+
 resumeItemScaleBlock.addEventListener('click', changeScale);
 resumeItemScaleBlock.addEventListener('touchstart', changeScale);
+
+let slideIndex1 = 1;
+let slideIndex2 = 1;
+const slides1 = document.querySelectorAll('.slider__wr__slide.plush-s');
+const slides2 = document.querySelectorAll('.slider__wr__slide.ubisoft');
+const prevSlide1 = document.querySelector('.slider__counter__prev.plush-s');
+const prevSlide2 = document.querySelector('.slider__counter__prev.ubisoft');
+const currentSlide1 = document.querySelector('.slider__counter__current.plush-s');
+const currentSlide2 = document.querySelector('.slider__counter__current.ubisoft');
+const nextSlide1 = document.querySelector('.slider__counter__next.plush-s');
+const nextSlide2 = document.querySelector('.slider__counter__next.ubisoft');
+const totalSlides2 = document.querySelector('.slider__counter__total.ubisoft');
+const totalSlides1 = document.querySelector('.slider__counter__total.plush-s');
+totalSlides1.textContent = slides1.length;
+totalSlides2.textContent = slides2.length;
+
+let showSlides = (slideNumber, slideIndex, slides, current, btnPrev, btnNext) => {
+  if (slideNumber === slides.length) {
+    btnNext.disabled = true;
+    btnNext.style.opacity = 0.2;
+  } else {
+    btnNext.disabled = false;
+    btnNext.style.opacity = 0.7;
+  }
+  if (slideNumber === 1) {
+    btnPrev.disabled = true;
+    btnPrev.style.opacity = 0.2;
+  } else {
+    btnPrev.disabled = false;
+    btnPrev.style.opacity = 0.7;
+  }
+
+  slides.forEach(slide => {
+    slide.classList.add('display-none');
+
+  });
+  slides[slideIndex - 1].classList.remove('display-none');
+  current.textContent = slideIndex;
+};
+
+let changeSlides1 = (numberOfIncrOrDecr) => {
+  showSlides((slideIndex1 += numberOfIncrOrDecr), slideIndex1, slides1, currentSlide1,
+    prevSlide1.firstElementChild, nextSlide1.firstElementChild);
+};
+let changeSlides2 = (numberOfIncrOrDecr) => {
+  showSlides((slideIndex2 += numberOfIncrOrDecr), slideIndex2, slides2, currentSlide2,
+    prevSlide2.firstElementChild, nextSlide2.firstElementChild);
+};
+
+prevSlide1.addEventListener('click', () => {
+  changeSlides1(-1);
+});
+nextSlide1.addEventListener('click', () => {
+  changeSlides1(1);
+});
+prevSlide2.addEventListener('click', () => {
+  changeSlides2(-1);
+});
+nextSlide2.addEventListener('click', () => {
+  changeSlides2(1);
+});
+
+showSlides(slideIndex1, slideIndex1, slides1, currentSlide1,
+  prevSlide1.firstElementChild, nextSlide1.firstElementChild);
+showSlides(slideIndex2, slideIndex2, slides2, currentSlide2,
+  prevSlide2.firstElementChild, nextSlide2.firstElementChild);
 
 
